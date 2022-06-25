@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby : 
+
+Vagrant.configure("2") do |config|
+  config.vm.box =  "bento/centos-8.5"
+  config.vm.define "ServerWorker" do |config|
+    config.vm.hostname = "ServerWorker"
+    config.vm.network :private_network, ip: "192.168.42.110"
+    config.vm.provider "virtualbox" do |vb|
+      vb.gui = false
+      vb.name = "ServerWorker"
+      vb.memory = "512"
+      vb.cpus = 1
+      config.vm.provision "shell", inline: <<-SHELL
+      cd /etc/yum.repos.d/
+      sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+      sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+      sudo yum update -y
+      dnf -y upgrade
+      cd /home/vagrant
+      SHELL
+      # config.vm.network "forwarded_port", guest: 5555, host: 22
+    end
+  end
+  config.vm.define "Server" do |config|
+    config.vm.hostname = "Server"
+    config.vm.network :private_network, ip: "192.168.42.111"
+    config.vm.provider "virtualbox" do |vb|
+      vb.gui = false
+      vb.memory = "512"
+      vb.cpus = 1
+      vb.name = "Server"
+      config.vm.provision "shell", inline: <<-SHELL
+      cd /etc/yum.repos.d/
+        dnf -y upgrade
+        sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+        sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+        sudo yum update -y
+        cd /home/vagrant
+        dnf -y upgrade
+      SHELL
+      # config.vm.network "forwarded_port", guest: 6666, host: 22
+    end
+  end
+end
