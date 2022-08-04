@@ -4,70 +4,35 @@
 require_relative 'vagrant_credentials.rb'
 include Secrets
 
-# server_script =  <<-SHELL
-# sudo -s
-# ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
-# cd /etc/yum.repos.d/
-# sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-# sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-# dnf update -y
-# cd /home/vagrant
-# dnf update -y && dnf install wget vim net-tools git lsof tar -y
-# # wget https://archives.fedoraproject.org/pub/archive/epel/6/x86_64/epel-release-6-8.noarch.rpm
-# # rpm -ivh epel-release-6-8.noarch.rpm
-# # yum --enablerepo=epel -y install sshpass
-# sed -i 's/enforcing/disabled/g' /etc/selinux/config
-# sed -i 's/PasswordAuthentication\s.*no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-# systemctl disable firewalld
-# systemctl restart sshd
-# SHELL
-
-# agent_script1 =  <<-SHELL
-# sudo -s
-# ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
-# cd /etc/yum.repos.d/
-# sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-# sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-# dnf update -y
-# cd /home/vagrant
-# dnf update -y && dnf install vim wget net-tools git lsof tar -y
-# wget https://archives.fedoraproject.org/pub/archive/epel/6/x86_64/epel-release-6-8.noarch.rpm
-# rpm -ivh epel-release-6-8.noarch.rpm
-# yum --enablerepo=epel -y install sshpass
-# sed -i 's/enforcing/disabled/g' /etc/selinux/config
-# sed -i 's/PasswordAuthentication\s.*no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-# systemctl disable firewalld
-# systemctl restart sshd  
-# SHELL
+server_script = <<-SHELL
+  mkdir 1
+  cp -r 1 /vagrant
+  cp -r 1 /vagrant/shared
+SHELL
 
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/8"
-    config.vm.define "Server" do |config|
-      config.vm.hostname = "Server"
-      config.vm.network :private_network, ip: "192.168.42.111"
-      server.vm.synced_folder "./shared", "/vagrant_shared"
-      config.vm.synced_folder "./shared", "/vagrant"
-      config.vm.provider "virtualbox" do |vb|
-        vb.gui = false
-        vb.memory = "2048"
-        vb.cpus = 2
-        vb.name = "Server"
-      end
-      config.vm.provision "shell", inline: <<-SHELL
-          cp /var/lib/rancher/k3s/server/token /vagrant
-      SHELL
+  config.vm.define "Server" do |config|
+    config.vm.hostname = "Server"
+    config.vm.network :private_network, ip: "192.168.42.111"
+    config.vm.synced_folder "./shared", "/vagrant_shared"
+    config.vm.provider "virtualbox" do |vb|
+      vb.gui = false
+      vb.memory = "2048"
+      vb.cpus = 2
+      vb.name = "Server"
     end
+    # config.vm.provision "shell", inline: server_script
+  end
   config.vm.define "ServerWorker" do |config|
     config.vm.hostname = "ServerWorker"
     config.vm.network :private_network, ip: "192.168.42.110"
-    server.vm.synced_folder "./shared", "/vagrant_shared"
-    config.vm.synced_folder "./shared", "/vagrant"
+    config.vm.synced_folder "./shared", "/vagrant_shared"
     config.vm.provider "virtualbox" do |vb|
       vb.gui = false
       vb.name = "ServerWorker"
       vb.memory = "2048"
       vb.cpus = 2
-      SHELL
     end
   end
 end
