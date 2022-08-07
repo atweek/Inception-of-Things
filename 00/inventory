@@ -1,8 +1,0 @@
-
-[Server]
-192.168.42.111
-
-[ServerWorkers]
-192.168.42.110
-
-vagrant plugin install vagrant-vbguest
