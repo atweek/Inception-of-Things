@@ -34,7 +34,7 @@ SHELL
 
 k3s_master = <<-SHELL
   echo [RUN K3S SERVER]
-  curl -sfL https://get.k3s.io | sh -s - server --write-kubeconfig-mode 644 --flannel-iface=eth1 >> /log/k3s.log 2>>/log/k3s_error.log
+  curl -sfL https://get.k3s.io | sh -s - server --write-kubeconfig-mode 644 --flannel-iface=eth1 
   # curl -sfL https://get.k3s.io | sh -s - server --write-kubeconfig-mode=644 --bind-address=192.168.42.110 --node-ip=192.168.42.110 --advertise-address=192.168.42.110
   systemctl status k3s.service > k3s_status
   cat k3s_status
@@ -43,7 +43,7 @@ k3s_master = <<-SHELL
   sudo chmod 777 /home/vagrant/token
 SHELL
 
-ssh = <<-SHELL
+change_pass = <<-SHELL
   echo [CHANGE PASS]
   echo $1 | sudo passwd --stdin vagrant
   echo $1 | sudo passwd --stdin root
@@ -76,30 +76,33 @@ SHELL
 
 
 kub = <<-SHELL
-  echo [RUN ingress controller]
-  git clone https://github.com/nginxinc/kubernetes-ingress.git --branch v2.3.0
-  cd kubernetes-ingress/deployments
-  /usr/local/bin/kubectl apply -f common/ns-and-sa.yaml
-  /usr/local/bin/kubectl apply -f rbac/rbac.yaml
-  /usr/local/bin/kubectl apply -f common/default-server-secret.yaml
-  /usr/local/bin/kubectl apply -f common/nginx-config.yaml
-  /usr/local/bin/kubectl apply -f common/ingress-class.yaml
-  /usr/local/bin/kubectl apply -f common/crds/k8s.nginx.org_virtualservers.yaml
-  /usr/local/bin/kubectl apply -f common/crds/k8s.nginx.org_virtualserverroutes.yaml
-  /usr/local/bin/kubectl apply -f common/crds/k8s.nginx.org_transportservers.yaml
-  /usr/local/bin/kubectl apply -f common/crds/k8s.nginx.org_policies.yaml
-  /usr/local/bin/kubectl apply -f deployment/nginx-ingress.yaml
-  /usr/local/bin/kubectl create -f service/nodeport.yaml
-  echo [RUN YAMLs on MASTER]
-  # export SSHPASS=$1
-  # sshpass -e ssh -tt vagrant@192.168.42.111
-  /usr/local/bin/kubectl create ns app
-  /usr/local/bin/kubectl create ns service 
-  /usr/local/bin/kubectl create ns ingress 
-  /usr/local/bin/kubectl apply -f /vagrant/configs/apps.yaml -n app
-  /usr/local/bin/kubectl apply -f /vagrant/configs/services.yaml -n service
-  /usr/local/bin/kubectl apply -f /vagrant/configs/ingress.yaml -n ingress
-  /usr/local/bin/kubectl get all -ALL
+    # echo [RUN ingress controller]
+    # git clone https://github.com/nginxinc/kubernetes-ingress.git --branch v2.3.0
+    # cd kubernetes-ingress/deployments
+    # /usr/local/bin/kubectl apply -f common/ns-and-sa.yaml
+    # /usr/local/bin/kubectl apply -f rbac/rbac.yaml
+    # /usr/local/bin/kubectl apply -f common/default-server-secret.yaml
+    # /usr/local/bin/kubectl apply -f common/nginx-config.yaml
+    # /usr/local/bin/kubectl apply -f common/ingress-class.yaml
+    # /usr/local/bin/kubectl apply -f common/crds/k8s.nginx.org_virtualservers.yaml
+    # /usr/local/bin/kubectl apply -f common/crds/k8s.nginx.org_virtualserverroutes.yaml
+    # /usr/local/bin/kubectl apply -f common/crds/k8s.nginx.org_transportservers.yaml
+    # /usr/local/bin/kubectl apply -f common/crds/k8s.nginx.org_policies.yaml
+    # /usr/local/bin/kubectl apply -f deployment/nginx-ingress.yaml
+    # /usr/local/bin/kubectl create -f service/nodeport.yaml
+    # echo [RUN YAMLs on MASTER]
+    # # export SSHPASS=$1
+    # # sshpass -e ssh -tt vagrant@192.168.42.111
+    # /usr/local/bin/kubectl create ns app
+    # /usr/local/bin/kubectl create ns service 
+    # /usr/local/bin/kubectl create ns ingress 
+    # /usr/local/bin/kubectl apply -f /vagrant/configs/apps.yaml -n app
+    # /usr/local/bin/kubectl apply -f /vagrant/configs/services.yaml -n service
+    # /usr/local/bin/kubectl apply -f /vagrant/configs/ingress.yaml -n ingress
+    # /usr/local/bin/kubectl get all -ALL
+    export SSHPASS=$1
+    sshpass -e ssh vagrant@192.168.42.111 'bash /vagrant/configs/start_ingress_controller.sh'
+
 SHELL
 
 Vagrant.configure("2") do |config|
@@ -116,8 +119,8 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", inline: test_connect
     config.vm.provision "shell", inline: update
     config.vm.provision "shell", inline: k3s_master
-    config.vm.provision "shell", inline: ssh, args: Password
-    config.vm.provision "shell", inline: kub
+    config.vm.provision "shell", inline: change_pass, args: Password
+    
   end
   config.vm.define "ServerWorker" do |config|
     config.vm.hostname = "ServerWorker"
@@ -130,8 +133,9 @@ Vagrant.configure("2") do |config|
     end
     config.vm.provision "shell", inline: test_connect
     config.vm.provision "shell", inline: update
-    config.vm.provision "shell", inline: ssh, args: Password
+    config.vm.provision "shell", inline: change_pass, args: Password
     config.vm.provision "shell", inline: k3s_node, args: Password
+    config.vm.provision "shell", inline: kub, args: Password
   end
 end
 

@@ -9,7 +9,7 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: 80
+    targetPort: 8080
 ---
 kind: Service
 apiVersion: v1
@@ -21,7 +21,7 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: 80
+    targetPort: 8080
 ---
 kind: Service
 apiVersion: v1
@@ -33,5 +33,5 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: 80
+    targetPort: 8080
 ---
