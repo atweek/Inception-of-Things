@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby : 
+
+#-------------
+GUI = false
+MEMORY = "4096"
+CPU = 4
+#-------------
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/8"
+  config.vm.define "Server" do |config|
+    config.vm.hostname = "Server"
+    config.vm.network :private_network, ip: "192.168.42.111"
+    config.vm.provider "virtualbox" do |vb|
+      vb.gui = GUI
+      vb.memory = MEMORY
+      vb.cpus = CPU
+      vb.name = "Server"
+    end
+    config.vm.provision "shell", inline: test_connect
+    config.vm.provision "shell", inline: update
+    config.vm.provision "shell", inline: install_k3d
+  end
+end
+
