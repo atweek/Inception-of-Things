@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: atweke
+spec:
+  destination:
+    name: ''
+    namespace: kuber
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: /02/confs/cluster/
+    repoURL: 'https://github.com/atweek/Inception-of-Things'
+    targetRevision: dev
+  project: atweek
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
