@@ -1,0 +1,2 @@
+sudo kubectl apply -n argocd -f argocd-cm.yaml 
+sudo kubectl apply -n argocd -f argocd-rbac-cm.yaml
