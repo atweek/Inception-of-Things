@@ -14,4 +14,4 @@ data:
 
   repositories: |
     - type: git
-      url: https://github.com/atweek/Inception-of-Things
+      url: https://github.com/atweek/Inception-of-Things.git
