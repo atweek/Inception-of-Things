@@ -21,6 +21,8 @@ first_run: install
 	@sudo kubectl apply -n argocd -f ../confs/argocd-cm.yaml 
 	@sudo kubectl apply -n argocd -f ../confs/argocd-rbac-cm.yaml
 	sh update_pass.sh
+
+	sudo kubctl apply -f project.yaml 
 	
 get_admin_secret:
 	@sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
@@ -34,6 +36,8 @@ run:
 	@echo "----------------"
 	@sleep 5
 	@sudo kubectl port-forward svc/argocd-server -n argocd 80:443 > ../log/port-forward.log 2> ../log/port-forward.log &
+
+	sudo kubctl apply -f project.yaml 
 
 kill_port-forward:
 	@-pkill kubectl
