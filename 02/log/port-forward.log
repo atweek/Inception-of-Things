@@ -11,11 +11,24 @@ Handling connection for 80
 Handling connection for 80
 Handling connection for 80
 Handling connection for 80
-tcp4 127.0.0.1:80->127.0.0.1:59754: read: connection reset by peer
-E0903 15:54:44.226361  223153 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:59782: write tcp4 127.0.0.1:80->127.0.0.1:59782: write: broken pipe
+Handling connection for 80
+Handling connection for 80
+Handling connection for 80
+Handling connection for 80
+Handling connection for 80
+Handling connection for 80
+Handling connection for 80
+Handling connection for 80
+Handling connection for 80
+7.0.0.1:59782: write: broken pipe
 E0903 15:54:46.106370  223153 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:59804: write tcp4 127.0.0.1:80->127.0.0.1:59804: write: broken pipe
 E0903 15:54:46.251882  223153 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:59808: write tcp4 127.0.0.1:80->127.0.0.1:59808: write: broken pipe
 E0903 15:54:46.265999  223153 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:59824: write tcp4 127.0.0.1:80->127.0.0.1:59824: write: broken pipe
 E0903 15:54:47.156928  223153 portforward.go:391] error copying from local connection to remote stream: read tcp4 127.0.0.1:80->127.0.0.1:59810: read: connection reset by peer
 E0903 15:54:48.346899  223153 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:59850: write tcp4 127.0.0.1:80->127.0.0.1:59850: write: broken pipe
 E0903 15:54:49.085892  223153 portforward.go:391] error copying from local connection to remote stream: read tcp4 127.0.0.1:80->127.0.0.1:59856: read: connection reset by peer
+E0903 16:02:14.203053  223153 portforward.go:391] error copying from local connection to remote stream: read tcp4 127.0.0.1:80->127.0.0.1:34404: read: connection reset by peer
+E0903 16:02:20.970993  223153 portforward.go:391] error copying from local connection to remote stream: read tcp4 127.0.0.1:80->127.0.0.1:42096: read: connection reset by peer
+E0903 16:02:20.987405  223153 portforward.go:391] error copying from local connection to remote stream: read tcp4 127.0.0.1:80->127.0.0.1:42098: read: connection reset by peer
+E0903 16:06:58.486335  223153 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:42126: write tcp4 127.0.0.1:80->127.0.0.1:42126: write: broken pipe
+E0903 16:08:02.861859  223153 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:60548: write tcp4 127.0.0.1:80->127.0.0.1:60548: write: broken pipe
