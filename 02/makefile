@@ -32,9 +32,6 @@ run:
 	@-systemctl start docker
 	@sudo k3d cluster list
 	@sudo kubectl cluster-info
-	@sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-	@sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d > ./secrets/default_pass
-	@echo "----------------"
 	@sleep 5
 	@sudo kubectl port-forward svc/argocd-server -n argocd 80:443 > ./log/port-forward.log 2> ./log/port-forward.log &
 	@sudo kubectl apply -f ./configs/argocd/project.yaml
