@@ -20,9 +20,10 @@ first_run: install
 	@sudo kubectl port-forward svc/argocd-server -n argocd 80:443 > ./log/port-forward.log 2> ./log/port-forward.log &
 	@sudo kubectl apply -n argocd -f ./configs/argocd/argocd-cm.yaml 
 	@sudo kubectl apply -n argocd -f ./configs/argocd/argocd-rbac-cm.yaml
-	@sh update_pass.sh
+	@sh ./scripts/update_pass.sh
 	@sudo kubectl apply -f ./configs/argocd/project.yaml
-	@sudo kubectl apply -f ./configs/argocd/application.yaml
+	@sudo kubectl apply -n argocd -f ./configs/argocd/application.yaml
+
 	
 get_admin_secret:
 	@sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
@@ -37,7 +38,8 @@ run:
 	@sleep 5
 	@sudo kubectl port-forward svc/argocd-server -n argocd 80:443 > ./log/port-forward.log 2> ./log/port-forward.log &
 	@sudo kubectl apply -f ./configs/argocd/project.yaml
-	@sudo kubectl apply -f ./configs/argocd/application.yaml
+	@sudo kubectl apply -n argocd -f ./configs/argocd/application.yaml
+
 
 kill_port-forward:
 	@-pkill kubectl

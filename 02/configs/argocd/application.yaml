@@ -8,7 +8,7 @@ spec:
     namespace: kuber
     server: 'https://kubernetes.default.svc'
   source:
-    path: 02/confs/cluster/
+    path: 02/configs/cluster/
     repoURL: 'https://github.com/atweek/Inception-of-Things.git'
     targetRevision: dev
   project: atweek
