@@ -1,1 +1,3 @@
-error: error upgrading connection: error dialing backend: EOF
+E0904 18:17:30.021677   14104 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:39758: write tcp4 127.0.0.1:80->127.Handling connection for 80
+Handling connection for 80
+Handling connection for 80
