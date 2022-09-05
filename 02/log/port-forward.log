@@ -21,7 +21,8 @@ Handling connection for 80
 Handling connection for 80
 Handling connection for 80
 Handling connection for 80
-2.099875   20783 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:43316: write tcp4 127.0.0.1:80->127.0.0.1:43316: write: broken pipe
+Handling connection for 80
+d.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:43316: write tcp4 127.0.0.1:80->127.0.0.1:43316: write: broken pipe
 E0905 19:32:12.112667   20783 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:43326: write tcp4 127.0.0.1:80->127.0.0.1:43326: write: broken pipe
 E0905 19:32:13.392704   20783 portforward.go:391] error copying from local connection to remote stream: read tcp4 127.0.0.1:80->127.0.0.1:43322: read: connection reset by peer
 E0905 19:32:15.653428   20783 portforward.go:378] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:80->127.0.0.1:40734: write tcp4 127.0.0.1:80->127.0.0.1:40734: write: broken pipe
