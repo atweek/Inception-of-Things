@@ -73,10 +73,6 @@ start_kub = <<-SHELL
 SHELL
 
 
-
-#TODO del mashine 2
-#TODO NAME
-
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/8"
   config.vm.define "AtweekS" do |config|
