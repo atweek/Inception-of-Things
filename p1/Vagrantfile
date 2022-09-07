@@ -46,8 +46,6 @@ ssh = <<-SHELL
   echo [CHANGE PASS]
   echo $1 | sudo passwd --stdin vagrant
   echo $1 | sudo passwd --stdin root
-  # echo [CREATE SSH KEY]
-  # ssh-keygen -f /home/vagrant/.ssh/id_rsa -t rsa -N '' >> /log/main.log 2>>/log/main_error.log
 SHELL
 
 k3s_node = <<-SHELL
@@ -63,29 +61,28 @@ SHELL
 
 
 
-# TODO change name
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/8" #7
-  config.vm.define "Server" do |config|
-    config.vm.hostname = "Server"
+  config.vm.define "AtweekS" do |config|
+    config.vm.hostname = "AtweekS"
     config.vm.network :private_network, ip: "192.168.42.111"
     config.vm.provider "virtualbox" do |vb|
       vb.gui = GUI
       vb.memory = MEMORY
       vb.cpus = CPU
-      vb.name = "Server"
+      vb.name = "AtweekS"
     end
     config.vm.provision "shell", inline: test_connect
     config.vm.provision "shell", inline: update
     config.vm.provision "shell", inline: k3s_master
     config.vm.provision "shell", inline: ssh, args: Password
   end
-  config.vm.define "ServerWorker" do |config|
-    config.vm.hostname = "ServerWorker"
+  config.vm.define "AtweekSW" do |config|
+    config.vm.hostname = "AtweekSW"
     config.vm.network :private_network, ip: "192.168.42.110"
     config.vm.provider "virtualbox" do |vb|
       vb.gui = GUI
-      vb.name = "ServerWorker"
+      vb.name = "AtweekSW"
       vb.memory = MEMORY
       vb.cpus = CPU
     end
