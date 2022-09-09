@@ -1,4 +1,4 @@
-NAME = In
+NAME = Inception-of-Things
 
 install:
 	@sudo k3d cluster create atweek --agents 2 --servers 1
@@ -8,7 +8,6 @@ install:
 
 first_run: install
 	@sudo systemctl start docker
-	@sudo k3d cluster listconfigs
 	@sudo kubectl cluster-info
 	@sleep 100
 	@sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
@@ -24,7 +23,7 @@ first_run: install
 	@sudo kubectl apply -f ./configs/argocd/project.yaml
 	@sudo kubectl apply -n argocd -f ./configs/argocd/application.yaml
 	@sleep 60
-	@sudo kubectl port-forward svc/atweek -n kuber 8888:8888 > ./log/port-forward_app.log 2> ./log/port-forward_app.log &
+	@sudo kubectl port-forward svc/atweek -n dev 8888:8888 > ./log/port-forward_app.log 2> ./log/port-forward_app.log &
 
 	
 get_admin_secret:
@@ -39,7 +38,7 @@ run:
 	@sudo kubectl apply -f ./configs/argocd/project.yaml
 	@sudo kubectl apply -n argocd -f ./configs/argocd/application.yaml
 	@sleep 60
-	@sudo kubectl port-forward svc/atweek -n kuber 8888:8888 > ./log/port-forward_app.log 2> ./log/port-forward_app.log &
+	@sudo kubectl port-forward svc/atweek -n dev 8888:8888 > ./log/port-forward_app.log 2> ./log/port-forward_app.log &
 
 
 kill_port-forward:
@@ -49,5 +48,3 @@ kill_port-forward:
 del_cluster: kill_port-forward
 	@k3d cluster delete atweek
 
-
-	#TODO @sudo k3d cluster listconfigs

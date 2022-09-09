@@ -1,3 +1,1 @@
-E0905 21:58:53.817068   66143 portforward.go:234] lost connection to pod
-
-Handling connection for 8888
+Error from server (NotFound): namespaces "dev" not found
