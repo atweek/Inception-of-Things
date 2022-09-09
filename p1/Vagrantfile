@@ -51,7 +51,7 @@ SHELL
 k3s_node = <<-SHELL
   echo [RUN K3S NODE]
   export SSHPASS=$1
-  sshpass -e scp -o StrictHostKeyChecking=no vagrant@192.168.42.111:/home/vagrant/token ./
+  sshpass -e scp -o StrictHostKeyChecking=no vagrant@192.168.42.111:/home/vagrant/token ./ 2>/dev/null
   sudo chmod 777 /home/vagrant/token
   curl -sfL https://get.k3s.io | sh -s - agent --server=https://192.168.42.111:6443  --token-file=/home/vagrant/token --flannel-iface=eth1
   systemctl status k3s-agent.service > k3s_status
